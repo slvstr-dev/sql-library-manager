@@ -26,13 +26,15 @@ router.get(
 );
 
 router.get(
-    "/books",
+    "/books/page/:id",
     handleRouteAsync(async (req, res) => {
         /* Get all books from database */
-        const books = await Book.findAll();
+        const { count, rows } = await Book.findAndCountAll({
+            limit: 5,
+        });
 
         /* Render all books returned from database */
-        res.render("index", { title: "All Books", books });
+        res.render("index", { title: "All Books", count, rows });
     })
 );
 

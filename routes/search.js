@@ -24,7 +24,7 @@ router.post(
         console.log(query);
 
         /* Get all books from database */
-        const books = await Book.findAll({
+        const { count, rows } = await Book.findAndCountAll({
             where: {
                 [Op.or]: [
                     {
@@ -49,10 +49,16 @@ router.post(
                     },
                 ],
             },
+            limit: 5,
         });
 
         /* Render all books returned from database */
-        res.render("index", { title: "Search Results", books, button: "Home" });
+        res.render("index", {
+            title: "Search Results",
+            count,
+            rows,
+            button: "Home",
+        });
     })
 );
 
