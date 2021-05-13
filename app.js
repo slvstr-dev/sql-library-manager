@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 
-// test connection to the database
+// Test connection to the database
 (async () => {
     try {
         await sequelize.authenticate();
@@ -31,7 +31,7 @@ app.use("/", indexRouter);
     }
 })();
 
-// catch 404 and forward to error handler
+// 404 error handler
 app.use((req, res) => {
     const err = new Error();
 
@@ -41,7 +41,7 @@ app.use((req, res) => {
     res.render("page-not-found", { title: "Page Not Found", err });
 });
 
-// error handler
+// Remaining errors handler
 app.use((err, req, res) => {
     err.message = "Sorry! There was an unexpected error on the server.";
 
