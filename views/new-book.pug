@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	h1 New Book
+	h1= title
 
 	form(method="post" action="/books/new")
 		p
@@ -25,7 +25,7 @@ block content
 			input(name="year" type="text" id="year")
 
 		p
-			input(type="submit" value="Create New Book")
+			input(type="submit" value= title)
 
 		p
 			a(class="button" href="/books") Cancel

@@ -1,15 +1,14 @@
 extends layout
 
 block content
-	h1 New Book
+	h1= title
 
-	form
+	form(method="post" action= book.action)
 		h2(class="error") Oooops!
 
 		ul(class="error")
-			li Title is required
-
-			li Author is required
+			each error in errors
+				li= error.message
 
 		p
 			label(for="title") Title 
@@ -32,7 +31,7 @@ block content
 			input(name="year" type="text" id="year" value= book.year)
 
 		p
-			input(type="submit" value="Create New Book")
+			input(type="submit" value= title)
 
 		p
 			a(class="button" href="/books") Cancel
