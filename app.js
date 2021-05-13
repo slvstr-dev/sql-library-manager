@@ -4,7 +4,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
 
 const sequelize = require("./models").sequelize;
 
@@ -21,7 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 
 // test connection to the database
 (async () => {
@@ -34,23 +32,21 @@ app.use("/users", usersRouter);
 })();
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
+app.use((req, res) => {
     const err = new Error();
 
-    err.title = "Page Not Found";
     err.message = "Sorry! We couldn't find the page you were looking for.";
 
     res.status(404);
-    res.render("page-not-found", { title: err.title, err });
+    res.render("page-not-found", { title: "Page Not Found", err });
 });
 
 // error handler
-app.use((err, req, res, next) => {
-    err.title = "Page Not Found";
-    err.message = "Sorry! We couldn't find the page you were looking for.";
+app.use((err, req, res) => {
+    err.message = "Sorry! There was an unexpected error on the server.";
 
     res.status(err.status || 500);
-    res.render("error", { title: err.title, err });
+    res.render("error", { title: "Server Error", err });
 
     console.log(err);
 });
