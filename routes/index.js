@@ -1,9 +1,13 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+var Book = require("../models").Book;
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", async (req, res, next) => {
+    const books = await Book.findAll();
+    console.log(books);
+    res.json(books);
+    // res.render("index", { title: "Express" });
 });
 
 module.exports = router;
