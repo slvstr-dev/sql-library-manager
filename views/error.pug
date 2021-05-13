@@ -1,5 +1,6 @@
 extends layout
 
 block content
-  h1 Server Error
-  p Sorry! There was an unexpected error on the server.
+	h1= err.title
+	h2= err.message
+	
