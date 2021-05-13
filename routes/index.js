@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const Book = require("../models").Book;
 
 /* Helper function to handle each route async */
