@@ -1,24 +1,30 @@
 extends layout
 
 block content
-	h1 Books 
+	h1 Books
 
-		p
-			a(class="button" href="new_book.html") Create New Book
+	p
+		a(class="button" href="/books/new") Create New Book
 
-		table
-			thead
+	table
+		thead
+			tr
+				th Title
+
+				th Author
+
+				th Genre
+
+				th Year
+
+		tbody
+			each book in books
 				tr
-					th Title
-					th Author
-					th Genre
-					th Year
+					td
+						a(href=`/books/${book.id}`)= book.title
 
-			tbody
-				each book in books
-					tr
-						td
-							a(href=`/${book.id}`)= book.title
-						td= book.author
-						td= book.genre
-						td= book.year
+					td= book.author
+
+					td= book.genre
+
+					td= book.year
