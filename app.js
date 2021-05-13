@@ -1,4 +1,3 @@
-const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -36,18 +35,24 @@ app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    next(createError(404));
+    const err = new Error();
+
+    err.title = "Page Not Found";
+    err.message = "Sorry! We couldn't find the page you were looking for.";
+
+    res.status(404);
+    res.render("page-not-found", { title: err.title, err });
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
+    err.title = "Page Not Found";
+    err.message = "Sorry! We couldn't find the page you were looking for.";
 
-    // render the error page
     res.status(err.status || 500);
-    res.render("error");
+    res.render("error", { title: err.title, err });
+
+    console.log(err);
 });
 
 module.exports = app;
