@@ -16,29 +16,6 @@ const handleRouteAsync = (callback) => {
     };
 };
 
-// /**
-//  * GET routes
-//  */
-// router.get(
-//     "/",
-//     handleRouteAsync(async (req, res, next) => {
-//         console.log("hello");
-//         console.log(req.body);
-
-//         /* Request book from database */
-//         const book = await Book.findByPk(req.params.id);
-
-//         /* Check if book request was successful */
-//         if (book) {
-//             /* Render book returned from database */
-//             res.render("update-book", { title: "Book Details", book });
-//         } else {
-//             /* Call 404 middleware function */
-//             next();
-//         }
-//     })
-// );
-
 router.post(
     "/",
     handleRouteAsync(async (req, res) => {
