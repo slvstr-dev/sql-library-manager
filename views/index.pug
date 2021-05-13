@@ -1,5 +1,23 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Books
+
+	p
+    a(class="button" href="new_book.html") Create New Book
+
+	table
+		thead
+			tr
+				th Title
+				th Author
+				th Genre
+				th Year
+
+		tbody
+			tr
+				td
+					a(href="book_detail.html") The Hunger Games
+				td Suzanne Collins
+				td Fantasy
+				td 2008
