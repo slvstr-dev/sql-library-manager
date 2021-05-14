@@ -19,8 +19,11 @@ const handleRouteAsync = (callback) => {
 router.get(
     "/",
     handleRouteAsync(async (req, res) => {
+        /* Store search and page query params */
         const search = req.query.s;
         const pageNumber = parseInt(req.query.p);
+
+        /* Declare pages object used for pagination */
         const pages = {
             current: isNaN(pageNumber) ? 1 : pageNumber,
             limit: 5,
@@ -56,6 +59,7 @@ router.get(
             offset: (pages.current - 1) * pages.limit,
         });
 
+        /* Add pagination keys based on books returned from database */
         pages.total = Math.ceil(count / pages.limit);
         pages.previous =
             pages.current > 1 && pages.total > 1
