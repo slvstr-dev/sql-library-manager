@@ -28,7 +28,7 @@ router.get(
 router.get(
     "/books",
     handleRouteAsync(async (req, res) => {
-        const pageNumber = parseInt(req.query.page);
+        const pageNumber = parseInt(req.query.p);
         const pages = {
             current: isNaN(pageNumber) ? 1 : pageNumber,
             limit: 5,
@@ -43,11 +43,11 @@ router.get(
         pages.total = Math.ceil(count / pages.limit);
         pages.previous =
             pages.current > 1 && pages.total > 1
-                ? `/books?page=${pages.current - 1}`
+                ? `/books?p=${pages.current - 1}`
                 : false;
         pages.next =
             pages.current < pages.total && pages.total > 1
-                ? `/books?page=${pages.current + 1}`
+                ? `/books?p=${pages.current + 1}`
                 : false;
 
         /* Render all books returned from database */
