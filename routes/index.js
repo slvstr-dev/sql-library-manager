@@ -34,7 +34,7 @@ router.get(
         /* Declare pages object used for pagination */
         const pages = {
             current: isNaN(pageNumber) ? 1 : pageNumber,
-            limit: 5,
+            limit: 10,
         };
 
         /* Get all books from database */
