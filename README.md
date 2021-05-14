@@ -10,6 +10,8 @@ Manage a collection of books by:
 -   Searching books by (partially) matching a title, author, genre or year.
 -   Adding, updating or deleting books.
 
+## Available scripts
+
 #### `npm start`
 
 Runs the app in the development mode.\
