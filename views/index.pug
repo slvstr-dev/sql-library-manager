@@ -6,16 +6,16 @@ block content
 	p
 		a(class="button" href="/books/new") Create New Book
 
-	if button
+	if showHomeButton
 		p
-			a(class="button" href="/")= button
+			a(class="button" href="/") Home
 
-	form(method="post" action="/search")
+	form(method="get" action="/search")
 		input(name="search" type="text" placeholder="Search title, author, genre or year" required)
 
 		input(type="submit" value="Search")
 
-	if rows.length > 0
+	if rows.length > 0 && pages.current > 0
 		table
 			thead
 				tr
@@ -38,5 +38,16 @@ block content
 						td= book.genre
 
 						td= book.year
+
+		if pages.previous
+			p
+				a(class="button" href= pages.previous) Previous page
+
+		if pages.next
+			p
+				a(class="button" href= pages.next) Next page
 	else
 		h2 Sorry! We couldn't find any books you were looking for.
+
+		p
+			a(class="button" href="/books") Home

@@ -16,12 +16,15 @@ const handleRouteAsync = (callback) => {
     };
 };
 
-router.post(
+router.get(
     "/",
     handleRouteAsync(async (req, res) => {
-        const query = req.body.search;
-
-        console.log(query);
+        const search = req.query.search;
+        const pageNumber = parseInt(req.query.page);
+        const pages = {
+            current: isNaN(pageNumber) ? 1 : pageNumber,
+            limit: 5,
+        };
 
         /* Get all books from database */
         const { count, rows } = await Book.findAndCountAll({
@@ -29,35 +32,46 @@ router.post(
                 [Op.or]: [
                     {
                         title: {
-                            [Op.substring]: query,
+                            [Op.substring]: search,
                         },
                     },
                     {
                         author: {
-                            [Op.substring]: query,
+                            [Op.substring]: search,
                         },
                     },
                     {
                         genre: {
-                            [Op.substring]: query,
+                            [Op.substring]: search,
                         },
                     },
                     {
                         year: {
-                            [Op.eq]: query,
+                            [Op.eq]: search,
                         },
                     },
                 ],
             },
-            limit: 5,
+            limit: pages.limit,
+            offset: (pages.current - 1) * pages.limit,
         });
+
+        pages.total = Math.ceil(count / pages.limit);
+        pages.previous =
+            pages.current > 1 && pages.total > 1
+                ? `/search?search=${search}&page=${pages.current - 1}`
+                : false;
+        pages.next =
+            pages.current < pages.total && pages.total > 1
+                ? `/search?search=${search}&page=${pages.current + 1}`
+                : false;
 
         /* Render all books returned from database */
         res.render("index", {
-            title: "Search Results",
-            count,
+            title: "All Books",
             rows,
-            button: "Home",
+            pages,
+            showHomeButton: true,
         });
     })
 );

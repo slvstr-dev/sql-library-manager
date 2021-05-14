@@ -26,15 +26,37 @@ router.get(
 );
 
 router.get(
-    "/books/page/:id",
+    "/books",
     handleRouteAsync(async (req, res) => {
+        const pageNumber = parseInt(req.query.page);
+        const pages = {
+            current: isNaN(pageNumber) ? 1 : pageNumber,
+            limit: 5,
+        };
+
         /* Get all books from database */
         const { count, rows } = await Book.findAndCountAll({
-            limit: 5,
+            limit: pages.limit,
+            offset: (pages.current - 1) * pages.limit,
         });
 
+        pages.total = Math.ceil(count / pages.limit);
+        pages.previous =
+            pages.current > 1 && pages.total > 1
+                ? `/books?page=${pages.current - 1}`
+                : false;
+        pages.next =
+            pages.current < pages.total && pages.total > 1
+                ? `/books?page=${pages.current + 1}`
+                : false;
+
         /* Render all books returned from database */
-        res.render("index", { title: "All Books", count, rows });
+        res.render("index", {
+            title: "All Books",
+            rows,
+            pages,
+            showHomeButton: false,
+        });
     })
 );
 
