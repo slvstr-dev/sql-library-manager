@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
+const booksRouter = require("./routes/books");
 const searchRouter = require("./routes/search");
 
 const sequelize = require("./models").sequelize;
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/books", booksRouter);
 app.use("/search", searchRouter);
 
 // Test connection to the database
