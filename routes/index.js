@@ -8,8 +8,8 @@ const handleRouteAsync = (callback) => {
     return async (req, res, next) => {
         try {
             await callback(req, res, next);
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
         }
     };
 };
@@ -101,8 +101,8 @@ router.post(
 
             /* Redirect to /books route */
             res.redirect("/books");
-        } catch (error) {
-            if (error.name === "SequelizeValidationError") {
+        } catch (err) {
+            if (err.name === "SequelizeValidationError") {
                 /* Store data of invalid new book */
                 book = await Book.build(req.body);
 
@@ -110,12 +110,12 @@ router.post(
                 res.render("form-error", {
                     title: "Create New Book",
                     book,
-                    errors: error.errors,
+                    errors: err.errors,
                     action: "/books/new",
                 });
             } else {
                 /* Throw other errors that will be caught in handleRouteAsync */
-                throw error;
+                throw err;
             }
         }
     })
@@ -142,8 +142,8 @@ router.post(
                 /* Call 404 middleware function */
                 next();
             }
-        } catch (error) {
-            if (error.name === "SequelizeValidationError") {
+        } catch (err) {
+            if (err.name === "SequelizeValidationError") {
                 /* Store data of invalid book update */
                 book = await Book.build(req.body);
                 book.id = req.params.id;
@@ -152,12 +152,12 @@ router.post(
                 res.render("form-error", {
                     title: "Edit Book",
                     book,
-                    errors: error.errors,
+                    errors: err.errors,
                     action: `/books/${book.id}`,
                 });
             } else {
                 /* Throw other errors that will be caught in handleRouteAsync */
-                throw error;
+                throw err;
             }
         }
     })

@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -34,23 +35,24 @@ app.use("/search", searchRouter);
 })();
 
 // 404 error handler
-app.use((req, res) => {
-    const err = new Error();
-
-    err.message = "Sorry! We couldn't find the page you were looking for.";
-
-    res.status(404);
-    res.render("page-not-found", { title: "Page Not Found", err });
+app.use((req, res, next) => {
+    next(createError(404));
 });
 
-// Remaining errors handler
-app.use((err, req, res) => {
-    err.message = "Sorry! There was an unexpected error on the server.";
+// Global errors handler
+app.use((err, req, res, next) => {
+    if (err.status === 404) {
+        res.status(404).render("page-not-found", { err });
+    } else {
+        err.message =
+            err.message ||
+            "Sorry! There was an unexpected error on the server.";
 
-    res.status(err.status || 500);
-    res.render("error", { title: "Server Error", err });
-
-    console.log(err);
+        res.status(err.status || 500).render("error", {
+            title: "Server Error",
+            err,
+        });
+    }
 });
 
 module.exports = app;
